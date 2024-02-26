@@ -11,18 +11,18 @@ def index(request):
     })
 
 
-def entry(request, title: str):
+def entry(request, title):
     """Presenting a page that displays the content of the entry."""
 
     # Retrieve the content of a page by its title if available.
-    if not (page := util.get_entry(title)):
+    if page := util.get_entry(title):
+        # Render the requested entry page.
+        return render(request, "encyclopedia/entry.html", {
+            "title": title,
+            "content": markdown2.markdown(page)
+        })
 
-        # If not found: create a 404 error page with its title and content.
-        page = f"<h1>404. That's an error</h1> <p>The requested URL /{title} was not found on this server.</p>"
-        title = "Error 404 (Not Found)!"
-
-    # Render the requested entry page.
-    return render(request, "encyclopedia/entry.html", {
-        "title": title,
-        "content": markdown2.markdown(page)
+    # If not found: render 404 error page.
+    return render(request, "encyclopedia/404error.html", {
+        "title": title
     })
