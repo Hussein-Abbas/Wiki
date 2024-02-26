@@ -10,6 +10,8 @@
     <ul>
         {% for entry in entries %}
             <li><a href="{% url 'entry' entry %}">{{ entry }}</a></li>
+        {% empty %}
+            <li>There isn't any entry</li>
         {% endfor %}
     </ul>
 
