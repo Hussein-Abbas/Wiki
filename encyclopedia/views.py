@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django import forms
 
 from . import util
 
@@ -15,7 +16,6 @@ def index(request):
 
 def entry(request, title):
     """Presenting a page that displays the content of the entry."""
-
     # Retrieve the content of a page by its title if available.
     if page := util.get_entry(title):
         # Render the requested entry page.
@@ -31,17 +31,7 @@ def entry(request, title):
 
 
 def search(request):
-    """
-    Search across all entries.
-
-    Parameters:
-    - request: HttpRequest object
-
-    Returns:
-    - HttpResponseRedirect: Redirects to the entry page if a matching entry is found.
-    - HttpResponse: Renders a page listing entries containing the query as a substring.
-    """
-
+    """Search across all entries."""
     # Get the title of the entry from the request.
     title = request.GET.get("q", "")
 
@@ -55,4 +45,46 @@ def search(request):
     return render(request, "encyclopedia/search.html", {
         "entries": entries,
         "title": title
+    })
+
+class NewForm(forms.Form):
+    title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={"id": "title-input", "autofocus": ""}))
+    content = forms.CharField(label="Content:", widget=forms.Textarea)
+
+
+# Create a new page.
+def newpage(request):
+    """Creating a new page."""
+    # Check if the request method is POST
+    if request.method == "POST":
+        # Take in the data the user submitted and save it as form.
+        form = NewForm(request.POST)
+        # Validate the form.
+        if form.is_valid():
+            # Extract the title and content from the form.
+            title = form.cleaned_data["title"]
+            content = form.cleaned_data["content"]
+
+            # Check if the title already exists.
+            if title in util.list_entries():
+                # Render the error page if the title already exists.
+                return render(request, "encyclopedia/error.html", {
+                    "error_title": "Entry already exists!",
+                    "details": "Entry's title already exists. Change entry's title to create it."
+                })
+            else:
+                # Save the new entry.
+                util.save_entry(title, content)
+                # Redirect to the newly created page.
+                return HttpResponseRedirect(reverse("entry", args=[title]))
+        else:
+            # Render the error page if the form is not valid.
+            return render(request, "encyclopedia/error.html", {
+                "error_title": "Inputs Error",
+                "details": "Missing title and/or content"
+            })
+
+    # Render the newpage.html template when the method is GET.
+    return render(request, "encyclopedia/newpage.html", {
+        "form": NewForm()
     })
