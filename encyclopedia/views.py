@@ -24,9 +24,10 @@ def entry(request, title):
             "content": markdown2.markdown(page)
         })
 
-    # If not found: render 404 error page.
-    return render(request, "encyclopedia/404error.html", {
-        "title": title
+    # If not found: render the error page.
+    return render(request, "encyclopedia/error.html", {
+        "error_title": "Error 404 (Not Found)!",
+        "details": f"The requested URL /{title} was not found on this server. That's all we know."
     })
 
 
@@ -47,8 +48,9 @@ def search(request):
         "title": title
     })
 
+
 class NewForm(forms.Form):
-    title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={"id": "title-input", "autofocus": ""}))
+    title = forms.CharField(label="Title:")
     content = forms.CharField(label="Content:", widget=forms.Textarea)
 
 
@@ -85,6 +87,4 @@ def newpage(request):
             })
 
     # Render the newpage.html template when the method is GET.
-    return render(request, "encyclopedia/newpage.html", {
-        "form": NewForm()
-    })
+    return render(request, "encyclopedia/newpage.html")
