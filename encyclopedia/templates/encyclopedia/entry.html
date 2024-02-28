@@ -6,6 +6,11 @@
 
 {% block body %}
     <div style="margin: 20px;">
+        <form action="{% url 'editpage' %}">
+            <div class="top-right-buttons">
+                <button name="title" value="{{ title }}" class="btn btn-secondary">edit</button>
+            </div>
+        </form>
         {{ content|safe }}
     </div>
 {% endblock %}

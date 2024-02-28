@@ -18,7 +18,7 @@
                 <ul>
                     <a href="{% url 'index' %}"><li>Home</li></a>
                     <a href="{% url 'newpage' %}"><li>Create New Page</li></a>
-                    <a href=""><li>Random Page</li></a>
+                    <a href="{% url 'randompage' %}"><li>Random Page</li></a>
                 </ul>
                 {% block nav %}
                 {% endblock %}

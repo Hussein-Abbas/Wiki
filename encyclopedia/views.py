@@ -1,16 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.urls import reverse
 from django import forms
 
 from . import util
 
 import markdown2 
-
+import random
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "entries": sorted(util.list_entries())
     })
 
 
@@ -83,8 +84,36 @@ def newpage(request):
             # Render the error page if the form is not valid.
             return render(request, "encyclopedia/error.html", {
                 "error_title": "Inputs Error",
-                "details": "Missing title and/or content"
+                "details": "Missing title and/or content!"
             })
 
     # Render the newpage.html template when the method is GET.
     return render(request, "encyclopedia/newpage.html")
+
+
+def editpage(request):
+    # When the method is GET.
+    if request.method == "GET":
+        title = request.GET.get("title", "")
+        if not title or not (content := util.get_entry(title)):
+            return render(request, "encyclopedia/error.html", {
+                "error_title": "Inputs Error",
+                "details": "Invalid title!"
+            })
+
+        return render(request, "encyclopedia/editpage.html", {
+            "title": title,
+            "content": content,
+        })
+    # When the method is POST
+    # Get title and content
+    title = request.POST["title"]
+    content = request.POST["content"]
+    # Save the changes 
+    util.save_entry(title, content)
+    return HttpResponseRedirect(reverse("entry", args=[title]))
+
+
+def randompage(request):
+    title = random.choice(util.list_entries())
+    return HttpResponseRedirect(reverse("entry", args=[title]))
