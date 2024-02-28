@@ -13,26 +13,6 @@ h1 {
     padding-top: 20px;
 }
 
-label {
-    display: block;
-    font-size: 25px;
-    font-weight: 400;
-    color: black;
-}
-
-#title-input {
-    width: 80%;
-    height: 35px;
-    padding: 8px;
-    font-size: 20px;
-}
-textarea {
-    height: 90vh;
-    width: 80%;
-    padding: 8px;
-    font-size: 25px;
-}
-
 .sidebar {
     background-color: #343a40;
     color: #ffffff; /* White text */
@@ -139,4 +119,37 @@ textarea {
     .main {
         margin-left: 20px;
     }
+}
+
+.top-right-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.top-right-buttons button {
+    margin-left: 10px;
+}
+
+.section {
+    width: 90%;
+}
+label {
+    display: block;
+    font-size: 25px;
+    font-weight: 500;
+    color: black;
+}
+
+#title-input {
+    width: 100%;
+    height: 35px;
+    padding: 8px;
+    font-size: 20px;
+}
+#textarea_content {
+    height: 90vh;
+    width: 100%;
+    padding: 8px;
+    font-size: 25px;
 }

@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block body %}
-    <h1>All Pages</h1>
+    <div class="main">
+        <h1>All Pages</h1>
 
-    <ul>
-        {% for entry in entries %}
-            <li><a href="{% url 'entry' entry %}">{{ entry }}</a></li>
-        {% empty %}
-            <li>There isn't any entry</li>
-        {% endfor %}
-    </ul>
-
+        <ul>
+            {% for entry in entries %}
+                <li><a href="{% url 'entry' entry %}">{{ entry }}</a></li>
+            {% empty %}
+                <li>There isn't any entry</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
