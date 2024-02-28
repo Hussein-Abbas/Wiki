@@ -10,24 +10,20 @@
     </head>
     <body>
         <div class="row">
-            <div class="sidebar col-lg-2 col-md-3">
+            <div class="sidebar col-lg-3 col-md-4">
                 <h2>Wiki</h2>
                 <form action="{% url 'search' %}">
                     <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
                 </form>
-                <div>
-                    <a href="{% url 'index' %}">Home</a>
-                </div>
-                <div>
-                    <a href="{% url 'newpage' %}">Create New Page</a>
-                </div>
-                <div>
-                    Random Page
-                </div>
+                <ul>
+                    <a href="{% url 'index' %}"><li>Home</li></a>
+                    <a href="{% url 'newpage' %}"><li>Create New Page</li></a>
+                    <a href=""><li>Random Page</li></a>
+                </ul>
                 {% block nav %}
                 {% endblock %}
             </div>
-            <div class="main col-lg-10 col-md-9">
+            <div class="main col-lg-9 col-md-8">
                 {% block body %}
                 {% endblock %}
             </div>
