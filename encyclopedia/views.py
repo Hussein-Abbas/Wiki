@@ -68,7 +68,7 @@ def newpage(request):
             content = form.cleaned_data["content"]
 
             # Check if the title already exists.
-            if title in util.list_entries():
+            if util.get_entry(title):
                 # Render the error page if the title already exists.
                 return render(request, "encyclopedia/error.html", {
                     "error_title": "Entry already exists!",
