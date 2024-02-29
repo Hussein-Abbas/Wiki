@@ -137,17 +137,9 @@ def deletepage(request, title):
     Args:
     - title: Title of the entry to be deleted.
     """
-
     # When the method is GET.
     if request.method == "GET":
         return HttpResponseRedirect(reverse("entry", args=[title]))
-    # If entry does not exist, render error page.
-    if not util.get_entry(title):
-        return render(request, "encyclopedia/error.html", {
-            "error_title": "Inputs Error",
-            "details": "Invalid title!"
-        })
-
     # When the method is POST.
     # Delete the entry.
     util.delete_entry(title)
