@@ -6,11 +6,16 @@
 
 {% block body %}
     <div style="margin: 20px;">
+        <div class="top-right-buttons">
         <form action="{% url 'editpage' title %}">
-            <div class="top-right-buttons">
-                <button type="submit" class="btn btn-secondary">edit</button>
+                <button type="submit" class="btn btn-secondary">Edit</button>
+        </form>
+        <form action="{% url 'deletepage' title %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
             </div>
         </form>
+        </div>
         {{ content|safe }}
     </div>
 {% endblock %}

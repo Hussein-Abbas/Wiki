@@ -35,3 +35,7 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+
+def delete_entry(title):
+    default_storage.delete(f"entries/{title}.md")
