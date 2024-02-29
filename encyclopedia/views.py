@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.http import HttpResponse
 from django.urls import reverse
 from django import forms
 
@@ -91,6 +90,7 @@ def newpage(request):
     return render(request, "encyclopedia/newpage.html")
 
 
+# Edit a page.
 def editpage(request, title):
     """Render edit page view.
 
@@ -100,22 +100,16 @@ def editpage(request, title):
 
     # When the method is GET.
     if request.method == "GET":
-        # Retrieve the content of the entry based on the given title.
-        content = util.get_entry(title)
-        # If title is not provided or entry does not exist, render error page.
-        if not content:
-            return render(request, "encyclopedia/error.html", {
-                "error_title": "Inputs Error",
-                "details": "Invalid title!"
-            })
+        # If entry does not exist, render error page.
+        if not (content := util.get_entry(title)):
+            return HttpResponseRedirect(reverse("entry", args=[title]))
         # Render edit page template with entry's current content.
         return render(request, "encyclopedia/editpage.html", {
             "title": title,
             "content": content,
         })
     
-    # When the method is POST.
-    # Retrieve the new content from the POST request.
+    # When the method is POST, retrieve the new content from the POST request.
     content = request.POST["content"]
     # Save the changes to the entry.
     util.save_entry(title, content)
@@ -123,6 +117,7 @@ def editpage(request, title):
     return HttpResponseRedirect(reverse("entry", args=[title]))
 
 
+# Redircet to a random page.
 def randompage(request):
     """Redirects to a random entry page."""
     # Select a random entry title from the list of all entries.
@@ -131,6 +126,7 @@ def randompage(request):
     return HttpResponseRedirect(reverse("entry", args=[title]))
 
 
+# Delete a page.
 def deletepage(request, title):
     """Render edit page view.
 
@@ -140,8 +136,8 @@ def deletepage(request, title):
     # When the method is GET.
     if request.method == "GET":
         return HttpResponseRedirect(reverse("entry", args=[title]))
-    # When the method is POST.
-    # Delete the entry.
+   
+    # When the method is POST, delete the entry.
     util.delete_entry(title)
     # Redirect to the index view.
     return HttpResponseRedirect(reverse("index"))
