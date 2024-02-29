@@ -103,7 +103,7 @@ def editpage(request, title):
         # Retrieve the content of the entry based on the given title.
         content = util.get_entry(title)
         # If title is not provided or entry does not exist, render error page.
-        if not title or not content:
+        if not content:
             return render(request, "encyclopedia/error.html", {
                 "error_title": "Inputs Error",
                 "details": "Invalid title!"
@@ -129,3 +129,27 @@ def randompage(request):
     title = random.choice(util.list_entries())
     # Redirect to the corresponding entry view.
     return HttpResponseRedirect(reverse("entry", args=[title]))
+
+
+def deletepage(request, title):
+    """Render edit page view.
+
+    Args:
+    - title: Title of the entry to be deleted.
+    """
+
+    # When the method is GET.
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("entry", args=[title]))
+    # If entry does not exist, render error page.
+    if not util.get_entry(title):
+        return render(request, "encyclopedia/error.html", {
+            "error_title": "Inputs Error",
+            "details": "Invalid title!"
+        })
+
+    # When the method is POST.
+    # Delete the entry.
+    util.delete_entry(title)
+    # Redirect to the index view.
+    return HttpResponseRedirect(reverse("index"))
