@@ -91,29 +91,41 @@ def newpage(request):
     return render(request, "encyclopedia/newpage.html")
 
 
-def editpage(request):
+def editpage(request, title):
+    """Render edit page view.
+
+    Args:
+    - title: Title of the entry to be edited
+    """
+
     # When the method is GET.
     if request.method == "GET":
-        title = request.GET.get("title", "")
-        if not title or not (content := util.get_entry(title)):
+        # Retrieve the content of the entry based on the given title.
+        content = util.get_entry(title)
+        # If title is not provided or entry does not exist, render error page.
+        if not title or not content:
             return render(request, "encyclopedia/error.html", {
                 "error_title": "Inputs Error",
                 "details": "Invalid title!"
             })
-
+        # Render edit page template with entry's current content.
         return render(request, "encyclopedia/editpage.html", {
             "title": title,
             "content": content,
         })
-    # When the method is POST
-    # Get title and content
-    title = request.POST["title"]
+    
+    # When the method is POST.
+    # Retrieve the new content from the POST request.
     content = request.POST["content"]
-    # Save the changes 
+    # Save the changes to the entry.
     util.save_entry(title, content)
+    # Redirect to the entry view.
     return HttpResponseRedirect(reverse("entry", args=[title]))
 
 
 def randompage(request):
+    """Redirects to a random entry page."""
+    # Select a random entry title from the list of all entries.
     title = random.choice(util.list_entries())
+    # Redirect to the corresponding entry view.
     return HttpResponseRedirect(reverse("entry", args=[title]))
