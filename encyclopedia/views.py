@@ -10,7 +10,7 @@ import random
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
-        "entries": sorted(util.list_entries())
+        "entries": util.list_entries()
     })
 
 
