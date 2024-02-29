@@ -7,11 +7,11 @@
 {% block body %}
     <div class="main">
         <h1>{{ title }}</h1>
-        <form action="{% url 'editpage' %}" method="POST">
+        <form action="{% url 'editpage' title %}" method="POST">
             {% csrf_token %}
             <div class="section">                
                 <div class="top-right-buttons">
-                    <button name="title" value="{{ title }}" class="btn btn-primary">Save</button>
+                    <button class="btn btn-primary">Save</button>
                 </div>
                 <div class="form-group">
                     <label for="id_content">Content:</label>
