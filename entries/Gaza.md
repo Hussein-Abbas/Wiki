@@ -1,0 +1,2 @@
+# Gaza 
+According to health authorities in Gaza, more than 100 Palestinians were killed by Israeli gunfire while they were waiting to get aid at the Nabulsi roundabout near Al-Rashid Street on Thursday, but Israel doubted the death toll and said that many of them died because aid trucks ran over them!!!
